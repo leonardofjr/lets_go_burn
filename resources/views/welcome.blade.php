@@ -63,7 +63,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    LETS GO BURN :)
+                    TOKE UP :)
                 </div>
                 @if (Route::has('login'))
                         <div class="links">
