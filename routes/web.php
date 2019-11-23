@@ -18,6 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('cors');
-Route::get('/users', 'UserController@index');
-Route::get('/user/{id}', 'UserController@show');
-Route::post('/user/{id}', 'UserController@update');
+Route::get('/user', 'UserController@index');
+Route::get('/user_geopoint/{id}', 'UserGeopointController@show');
+Route::post('/user_geopoint', 'UserGeopointController@store');

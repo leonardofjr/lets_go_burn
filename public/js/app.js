@@ -1873,25 +1873,26 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       mymap: undefined,
-      lat: undefined,
-      lng: undefined
+      lat: 1,
+      lng: 1,
+      name: undefined,
+      user_id: undefined
     };
   },
   mounted: function mounted() {
-    this.mymap = L.map('mapid').setView([51.505, -0.09], 13);
-    this.mymap.locate({
-      setView: true,
-      maxZoom: 16
-    });
-    var attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-    var tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var tiles = L.tileLayer(tileUrl, {
-      attribution: attribution
-    });
-    tiles.addTo(this.mymap);
+    this.getUserData();
     this.getUserLocation();
+    this.getStoredPosition();
   },
   methods: {
+    getUserData: function getUserData() {
+      var _this = this;
+
+      axios.get('http://localhost:8000/user').then(function (response) {
+        _this.name = response.data.name;
+        _this.user_id = response.data.id;
+      });
+    },
     getUserLocation: function getUserLocation() {
       if (navigator.geolocation) {
         // Utilizing HTML Geolocation API to locate user's position
@@ -1901,18 +1902,33 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     storePosition: function storePosition(position) {
-      var _this = this;
-
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
-      axios.post(this.web_url + 'user/1', {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }).then(function (response) {
-        if (response.status === 200) {
-          _this.createUserMarker();
-        }
+      axios.post(this.web_url + 'user_geopoint', {
+        lat: this.lat,
+        lng: this.lng
       });
+    },
+    getStoredPosition: function getStoredPosition() {
+      var _this2 = this;
+
+      axios.get(this.web_url + 'user_geopoint/' + this.user_id).then(function (response) {
+        if (response.status === 200) {
+          _this2.createMap();
+
+          _this2.createUserMarker();
+        }
+      })["catch"](function (error) {});
+    },
+    createMap: function createMap() {
+      this.mymap = L.map('mapid').setView([this.lat, this.lng], 13); // this.mymap.locate({setView: true, maxZoom: 16});
+
+      var attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+      var tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      var tiles = L.tileLayer(tileUrl, {
+        attribution: attribution
+      });
+      tiles.addTo(this.mymap);
     },
     createUserMarker: function createUserMarker() {
       var LeafIcon = L.Icon.extend({
@@ -1941,7 +1957,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       L.marker([this.lat, this.lng], {
         icon: greenIcon
-      }).addTo(this.mymap).bindPopup('Come Chill');
+      }).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
     }
   }
 });

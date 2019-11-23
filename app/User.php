@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'geopoints',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -36,4 +36,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the users' geopoint.
+     */
+        public function geopoint()
+        {
+            return $this->hasOne('App\UserGeopoint', 'id');
+        }
 }

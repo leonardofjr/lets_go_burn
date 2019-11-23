@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
 use App\UserGeopoint;
-use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class UserGeopointController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user_id = Auth::id();
-        $user = User::findOrFail($user_id);
-        return response()->json(
-            $user
-        );
+        //
     }
 
     /**
@@ -41,7 +35,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!UserGeopoint::where('id', '1')) {
+            $user_geopoint = new UserGeopoint();
+            $user_geopoint->lat = $request->lat;
+            $user_geopoint->lng = $request->lng;
+            $user_geopoint->save();
+        } else {
+            $user_geopoint = UserGeopoint::findOrFail(1);
+            $user_geopoint->lat = $request->lat;
+            $user_geopoint->lng = $request->lng;
+            $user_geopoint->save();
+            return response()->json($user_geopoint);
+        }
+
     }
 
     /**
@@ -52,8 +58,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return response()->json($user);
+        $user_geopoint = UserGeopoint::findOrFail(1);
+        return response()->json($user_geopoint);
     }
 
     /**
@@ -76,9 +82,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = UserGeopoint::get();
-        dd($user);
-
+        //
     }
 
     /**

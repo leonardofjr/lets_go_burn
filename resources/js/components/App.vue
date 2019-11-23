@@ -34,32 +34,30 @@
         data() {
             return {
                 mymap: undefined,
-                lat: undefined,
-                lng: undefined,
+                lat: 1,
+                lng: 1,
+                name: undefined,
+                user_id: undefined
             }
         },
         mounted() {
-            
-
-
-            this.mymap = L.map('mapid').setView([51.505, -0.09], 13);
-            this.mymap.locate({setView: true, maxZoom: 16});
-
-            const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-            const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-            var tiles = L.tileLayer(tileUrl, {attribution});
-            tiles.addTo(this.mymap)
-
-
-
-        
-        this.getUserLocation();
+            this.getUserData();
+            this.getUserLocation();
+            this.getStoredPosition();
 
 
         },
 
         methods: {
+            getUserData: function() {
+                axios
+                .get('http://localhost:8000/user')
+                .then((response) => {
+                    this.name = response.data.name;
+                    this.user_id = response.data.id;
+                })
+            },
+
             getUserLocation: function() {
                 if (navigator.geolocation) {
                     // Utilizing HTML Geolocation API to locate user's position
@@ -72,18 +70,37 @@
             storePosition: function(position) {
                 this.lat = position.coords.latitude;
                 this.lng = position.coords.longitude;
-
                 axios
-                .post(this.web_url + 'user/1', {lat: position.coords.latitude, lng: position.coords.longitude} )
-                .then((response => {
-                    if (response.status === 200) {
-                      this.createUserMarker()
-                    }
-
-                }));
+                .post(this.web_url + 'user_geopoint', {lat: this.lat , lng: this.lng});
             
             },
 
+            getStoredPosition: function() {
+                axios
+                .get(this.web_url + 'user_geopoint/' + this.user_id)
+                .then(response => {
+                    if (response.status === 200) {
+                            this.createMap();
+                            this.createUserMarker();
+                        } 
+                 
+                })
+                .catch(error => {
+         
+                })
+            },
+            createMap: function() {
+                this.mymap = L.map('mapid').setView([this.lat, this.lng], 13);
+               // this.mymap.locate({setView: true, maxZoom: 16});
+    
+                const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+                const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+                var tiles = L.tileLayer(tileUrl, {attribution});
+                tiles.addTo(this.mymap)
+
+
+            },
             createUserMarker: function() {
 
                 var LeafIcon = L.Icon.extend({
@@ -101,7 +118,7 @@
                 redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
                 orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
 
-                L.marker([ this.lat,  this.lng], {icon: greenIcon}).addTo(this.mymap).bindPopup('Come Chill');
+                L.marker([ this.lat,  this.lng], {icon: greenIcon}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
 
 
             }
