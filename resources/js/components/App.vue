@@ -34,10 +34,14 @@
         data() {
             return {
                 mymap: undefined,
+                lat: undefined,
+                lng: undefined,
             }
         },
         mounted() {
             
+
+
             this.mymap = L.map('mapid').setView([51.505, -0.09], 13);
             this.mymap.locate({setView: true, maxZoom: 16});
 
@@ -59,29 +63,47 @@
             getUserLocation: function() {
                 if (navigator.geolocation) {
                     // Utilizing HTML Geolocation API to locate user's position
-                    return navigator.geolocation.getCurrentPosition(this.createUserMarker);
+                    return navigator.geolocation.getCurrentPosition(this.storePosition);
                 } else {
                     alert("Geolocation is not supported by this browser.");
                 }
             },
 
-            createUserMarker: function(position) {
+            storePosition: function(position) {
+                this.lat = position.coords.latitude;
+                this.lng = position.coords.longitude;
+
+                axios
+                .post(this.web_url + 'user/1', {lat: position.coords.latitude, lng: position.coords.longitude} )
+                .then((response => {
+                    if (response.status === 200) {
+                      this.createUserMarker()
+                    }
+
+                }));
+            
+            },
+
+            createUserMarker: function() {
+
                 var LeafIcon = L.Icon.extend({
-                shadowUrl: 'leaf-shadow.png',
-
-                iconSize:     [38, 95], // size of the icon
-                shadowSize:   [50, 64], // size of the shadow
-                iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-                shadowAnchor: [4, 62],  // the same for the shadow
-                popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-
+                options: { 
+                        shadowUrl: 'leaf-shadow.png',
+                        iconSize:     [38, 95], // size of the icon
+                        shadowSize:   [50, 64], // size of the shadow
+                        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+                        shadowAnchor: [4, 62],  // the same for the shadow
+                        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                    }
                 });
 
                 var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
                 redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
                 orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
 
-                L.marker([ position.coords.latitude,  position.coords.longitude], {icon: greenIcon}).addTo(this.mymap).bindPopup('Come Chill');
+                L.marker([ this.lat,  this.lng], {icon: greenIcon}).addTo(this.mymap).bindPopup('Come Chill');
+
+
             }
         }
     }

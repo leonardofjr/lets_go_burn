@@ -1872,7 +1872,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      mymap: undefined
+      mymap: undefined,
+      lat: undefined,
+      lng: undefined
     };
   },
   mounted: function mounted() {
@@ -1893,24 +1895,40 @@ __webpack_require__.r(__webpack_exports__);
     getUserLocation: function getUserLocation() {
       if (navigator.geolocation) {
         // Utilizing HTML Geolocation API to locate user's position
-        return navigator.geolocation.getCurrentPosition(this.createUserMarker);
+        return navigator.geolocation.getCurrentPosition(this.storePosition);
       } else {
         alert("Geolocation is not supported by this browser.");
       }
     },
-    createUserMarker: function createUserMarker(position) {
-      var LeafIcon = L.Icon.extend({
-        shadowUrl: 'leaf-shadow.png',
-        iconSize: [38, 95],
-        // size of the icon
-        shadowSize: [50, 64],
-        // size of the shadow
-        iconAnchor: [22, 94],
-        // point of the icon which will correspond to marker's location
-        shadowAnchor: [4, 62],
-        // the same for the shadow
-        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    storePosition: function storePosition(position) {
+      var _this = this;
 
+      this.lat = position.coords.latitude;
+      this.lng = position.coords.longitude;
+      axios.post(this.web_url + 'user/1', {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }).then(function (response) {
+        if (response.status === 200) {
+          _this.createUserMarker();
+        }
+      });
+    },
+    createUserMarker: function createUserMarker() {
+      var LeafIcon = L.Icon.extend({
+        options: {
+          shadowUrl: 'leaf-shadow.png',
+          iconSize: [38, 95],
+          // size of the icon
+          shadowSize: [50, 64],
+          // size of the shadow
+          iconAnchor: [22, 94],
+          // point of the icon which will correspond to marker's location
+          shadowAnchor: [4, 62],
+          // the same for the shadow
+          popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+
+        }
       });
       var greenIcon = new LeafIcon({
         iconUrl: 'leaf-green.png'
@@ -1921,7 +1939,7 @@ __webpack_require__.r(__webpack_exports__);
           orangeIcon = new LeafIcon({
         iconUrl: 'leaf-orange.png'
       });
-      L.marker([position.coords.latitude, position.coords.longitude], {
+      L.marker([this.lat, this.lng], {
         icon: greenIcon
       }).addTo(this.mymap).bindPopup('Come Chill');
     }
@@ -1939,16 +1957,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.web_url + 'users').then(function (response) {
+    axios.get(this.web_url + 'user/1').then(function (response) {
       return console.log(response.data);
     });
   }
@@ -1970,9 +1985,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  }
+  data: function data() {
+    return {
+      lat: '1',
+      lng: '2'
+    };
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),

@@ -4,8 +4,15 @@
 
 <script>
     export default {
+        data() {
+            return {
+                    lat: '1',
+                    lng: '2',
+                
+            }
+        },
         mounted() {
-            console.log('Component mounted.')
+
         }
     }
 </script>

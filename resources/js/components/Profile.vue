@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import axios from 'axios';
 
     export default {
         mounted() {
                 axios
-                .get(this.web_url + 'users')
+                .get(this.web_url + 'user/1' )
                 .then(response => (
                     console.log(response.data)
                 ))
