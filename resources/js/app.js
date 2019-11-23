@@ -23,7 +23,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import App from './components/App'
-import ExampleComponent from './components/ExampleComponent'
+import Profile from './components/Profile'
+import Tokers from './components/Tokers'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -32,11 +33,25 @@ import ExampleComponent from './components/ExampleComponent'
  */
 
 const routes = [
-    { path: '/', component: ExampleComponent },
+    { path: '/', component: Tokers },
+    { path: '/profile', component: Profile },
   ]
   
 const router = new VueRouter({
     routes // short for `routes: routes`
+})
+
+// inject a handler for `myOption` custom option
+Vue.mixin({
+    data: function () {
+            return {
+                get web_url() {
+                   // return "https://tokeup.ca/";
+                    return "http://localhost:8000/";
+        }
+    }
+}
+    
 })
 
 const app = new Vue({
@@ -44,3 +59,4 @@ const app = new Vue({
     components: { App },
     router
 });
+

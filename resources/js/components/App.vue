@@ -17,7 +17,8 @@
                                     <!-- use router-link component for navigation. -->
                                     <!-- specify the link by passing the `to` prop. -->
                                     <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
-                                <li><router-link to="/" exact>HOME</router-link></li>
+                                <li><router-link to="/profile" exact>Profile</router-link></li>
+                                <li><router-link to="/" exact>Tokers</router-link></li>
 
                             </ul>
                         </nav>
