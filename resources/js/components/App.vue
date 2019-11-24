@@ -43,7 +43,6 @@
         mounted() {
             this.getUserData();
             this.getUserLocation();
-            this.getStoredPosition();
 
 
         },
@@ -71,11 +70,16 @@
                 this.lat = position.coords.latitude;
                 this.lng = position.coords.longitude;
                 axios
-                .post(this.web_url + 'user_geopoint', {lat: this.lat , lng: this.lng});
+                .post(this.web_url + 'user_geopoint', {lat: this.lat , lng: this.lng})
+                .then(response => {
+                                this.getStoredPosition();
+
+                });
             
             },
 
             getStoredPosition: function() {
+                console.log(this.user_id);
                 axios
                 .get(this.web_url + 'user_geopoint/' + this.user_id)
                 .then(response => {

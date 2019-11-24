@@ -14,10 +14,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         $user_id = Auth::id();
         $user = User::findOrFail($user_id);
+
         return response()->json(
             $user
         );

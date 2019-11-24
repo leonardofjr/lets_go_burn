@@ -16,8 +16,8 @@ class CreateUserGeopointsTable extends Migration
         Schema::create('user_geopoints', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->string('lat')->nullable();
-            $table->string('lng')->nullable();
+            $table->string('lat')->default(1);
+            $table->string('lng')->default(1);
         });
     }
 

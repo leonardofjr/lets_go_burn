@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\UserGeopoint;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserGeopointController extends Controller
 {
@@ -35,18 +37,15 @@ class UserGeopointController extends Controller
      */
     public function store(Request $request)
     {
-        if(!UserGeopoint::where('id', '1')) {
-            $user_geopoint = new UserGeopoint();
-            $user_geopoint->lat = $request->lat;
-            $user_geopoint->lng = $request->lng;
-            $user_geopoint->save();
-        } else {
-            $user_geopoint = UserGeopoint::findOrFail(1);
+         $user_id = Auth::id();
+            $user_geopoint = UserGeopoint::findOrFail($user_id);
             $user_geopoint->lat = $request->lat;
             $user_geopoint->lng = $request->lng;
             $user_geopoint->save();
             return response()->json($user_geopoint);
-        }
+
+
+      
 
     }
 
@@ -58,7 +57,9 @@ class UserGeopointController extends Controller
      */
     public function show($id)
     {
-        $user_geopoint = UserGeopoint::findOrFail(1);
+        $user_id = Auth::id();
+
+        $user_geopoint = UserGeopoint::findOrFail($user_id);
         return response()->json($user_geopoint);
     }
 

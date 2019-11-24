@@ -1882,7 +1882,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.getUserData();
     this.getUserLocation();
-    this.getStoredPosition();
   },
   methods: {
     getUserData: function getUserData() {
@@ -1902,21 +1901,26 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     storePosition: function storePosition(position) {
+      var _this2 = this;
+
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
       axios.post(this.web_url + 'user_geopoint', {
         lat: this.lat,
         lng: this.lng
+      }).then(function (response) {
+        _this2.getStoredPosition();
       });
     },
     getStoredPosition: function getStoredPosition() {
-      var _this2 = this;
+      var _this3 = this;
 
+      console.log(this.user_id);
       axios.get(this.web_url + 'user_geopoint/' + this.user_id).then(function (response) {
         if (response.status === 200) {
-          _this2.createMap();
+          _this3.createMap();
 
-          _this2.createUserMarker();
+          _this3.createUserMarker();
         }
       })["catch"](function (error) {});
     },
