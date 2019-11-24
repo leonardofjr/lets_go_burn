@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Cache;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -43,5 +43,9 @@ class User extends Authenticatable
         public function geopoint()
         {
             return $this->hasOne('App\UserGeopoint', 'id');
+        }
+
+        public function isOnline() {
+            return Cache::has('user-is-online-' . $this->id);
         }
 }

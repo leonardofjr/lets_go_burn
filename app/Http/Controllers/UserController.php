@@ -15,7 +15,18 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function getOnlineUsers() {
+        $users = User::all();
+        $online_users_id = [];
+        foreach($users as $key => $user) {
+            if($user->isOnline()) {
+              array_push($online_users_id, $user->id);
+            }
+        }
+     
+        return response()->json($online_users_id);
 
+    }
     public function index()
     {
         $user_id = Auth::id();

@@ -1921,10 +1921,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    this.getOnlineUsers();
     this.getUserData();
     this.getUserLocation();
   },
   methods: {
+    getOnlineUsers: function getOnlineUsers() {
+      axios.get('http://localhost:8000/online_users').then(function (response) {
+        console.log(response);
+      });
+    },
     getUserData: function getUserData() {
       var _this = this;
 
@@ -1956,7 +1962,6 @@ __webpack_require__.r(__webpack_exports__);
     getStoredPosition: function getStoredPosition() {
       var _this3 = this;
 
-      console.log(this.user_id);
       axios.get(this.web_url + 'user_geopoint/' + this.user_id).then(function (response) {
         if (response.status === 200) {
           _this3.createMap();

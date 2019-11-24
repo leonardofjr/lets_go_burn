@@ -14,11 +14,18 @@
             }
         },
         mounted() {
-                
+                this.getOnlineUsers();
             this.getUserData();
             this.getUserLocation();
         },
     methods: {
+            getOnlineUsers: function() {
+                axios
+                .get('http://localhost:8000/online_users')
+                .then(response => {
+                    console.log(response);
+                })
+            },
             getUserData: function() {
                 axios
                 .get('http://localhost:8000/user')
@@ -50,7 +57,6 @@
             },
 
             getStoredPosition: function() {
-                console.log(this.user_id);
                 axios
                 .get(this.web_url + 'user_geopoint/' + this.user_id)
                 .then(response => {
