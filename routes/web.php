@@ -21,5 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('cors');
 Route::get('/user', 'UserController@index');
 Route::get('/online_users', 'UserController@getOnlineUsers');
 Route::get('/user_geopoint/{id}', 'UserGeopointController@show');
-Route::get('/user_geopoints', 'UserGeopointController@index');
-Route::post('/user_geopoint/{id}', 'UserGeopointController@store');
+Route::post('/user_geopoint/{id}', 'UserGeopointController@update');

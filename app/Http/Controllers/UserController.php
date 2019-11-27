@@ -16,15 +16,15 @@ class UserController extends Controller
      */
 
     public function getOnlineUsers() {
-        $users = User::all();
-        $online_users_id = [];
+        $users = User::with('geopoint')->get();
+        $online_users = [];
         foreach($users as $key => $user) {
             if($user->isOnline()) {
-              array_push($online_users_id, $user->id);
+              array_push($online_users, $user);
             }
         }
      
-        return response()->json($online_users_id);
+        return response()->json($online_users);
 
     }
     public function index()

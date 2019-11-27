@@ -16,9 +16,7 @@ class UserGeopointController extends Controller
      */
     public function index()
     {
-        $user_geopoints = UserGeopoint::all();
-
-        return response()->json($user_geopoints);
+       //
     }
 
     /**

@@ -1917,7 +1917,7 @@ __webpack_require__.r(__webpack_exports__);
       lat: 1,
       lng: 1,
       name: undefined,
-      user_id: undefined,
+      user_id: 1,
       online_users: undefined
     };
   },
@@ -1955,6 +1955,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
+      console.log(this.user_id);
       axios.post(this.web_url + 'user_geopoint/' + this.user_id, {
         lat: this.lat,
         lng: this.lng
