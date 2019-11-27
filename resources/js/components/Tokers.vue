@@ -10,20 +10,24 @@
                 lat: 1,
                 lng: 1,
                 name: undefined,
-                user_id: undefined
+                user_id: undefined,
+                online_users: undefined,
             }
         },
         mounted() {
-                this.getOnlineUsers();
+            this.getAllOnlineUsers();
             this.getUserData();
-            this.getUserLocation();
+            this.getCurrentUserLocation();
         },
     methods: {
-            getOnlineUsers: function() {
+            getAllOnlineUsers: function() {
                 axios
                 .get('http://localhost:8000/online_users')
                 .then(response => {
-                    console.log(response);
+                    return response;
+                })
+                .then(response => {
+                    console.log(response.data);
                 })
             },
             getUserData: function() {
@@ -35,22 +39,22 @@
                 })
             },
 
-            getUserLocation: function() {
+            getCurrentUserLocation: function() {
                 if (navigator.geolocation) {
                     // Utilizing HTML Geolocation API to locate user's position
-                    return navigator.geolocation.getCurrentPosition(this.storePosition);
+                    return navigator.geolocation.getCurrentPosition(this.updateUserPosition);
                 } else {
                     alert("Geolocation is not supported by this browser.");
                 }
             },
 
-            storePosition: function(position) {
+            updateUserPosition: function(position) {
                 this.lat = position.coords.latitude;
                 this.lng = position.coords.longitude;
                 axios
-                .post(this.web_url + 'user_geopoint', {lat: this.lat , lng: this.lng})
+                .post(this.web_url + 'user_geopoint/' + this.user_id, {lat: this.lat , lng: this.lng})
                 .then(response => {
-                                this.getStoredPosition();
+                    this.getStoredPosition();
 
                 });
             
@@ -77,14 +81,14 @@
                 const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
                 const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-                var tiles = L.tileLayer(tileUrl, {attribution});
+                let tiles = L.tileLayer(tileUrl, {attribution});
                 tiles.addTo(this.mymap)
 
 
             },
             createUserMarker: function() {
 
-                var LeafIcon = L.Icon.extend({
+                let LeafIcon = L.Icon.extend({
                 options: { 
                         shadowUrl: 'leaf-shadow.png',
                         iconSize:     [38, 95], // size of the icon
@@ -95,10 +99,10 @@
                     }
                 });
 
-                var greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
+                let greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
                 redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
                 orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
-
+                
                 L.marker([ this.lat,  this.lng], {icon: greenIcon}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
 
 

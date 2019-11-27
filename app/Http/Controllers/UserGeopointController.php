@@ -16,7 +16,9 @@ class UserGeopointController extends Controller
      */
     public function index()
     {
-        //
+        $user_geopoints = UserGeopoint::all();
+
+        return response()->json($user_geopoints);
     }
 
     /**
@@ -37,15 +39,8 @@ class UserGeopointController extends Controller
      */
     public function store(Request $request)
     {
-         $user_id = Auth::id();
-            $user_geopoint = UserGeopoint::findOrFail($user_id);
-            $user_geopoint->lat = $request->lat;
-            $user_geopoint->lng = $request->lng;
-            $user_geopoint->save();
-            return response()->json($user_geopoint);
 
-
-      
+      //
 
     }
 
@@ -83,7 +78,13 @@ class UserGeopointController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user_geopoint = UserGeopoint::findOrFail($id);
+        $user_geopoint->lat = $request->lat;
+        $user_geopoint->lng = $request->lng;
+        $user_geopoint->save();
+        return response()->json($user_geopoint);
+
+
     }
 
     /**
