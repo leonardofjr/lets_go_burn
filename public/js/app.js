@@ -1917,29 +1917,32 @@ __webpack_require__.r(__webpack_exports__);
       lat: 1,
       lng: 1,
       name: undefined,
-      user_id: 1,
+      user_id: undefined,
       online_users: undefined
     };
   },
   mounted: function mounted() {
     this.getAllOnlineUsers();
     this.getUserData();
-    this.getCurrentUserLocation();
   },
   methods: {
     getAllOnlineUsers: function getAllOnlineUsers() {
+      var _this = this;
+
       axios.get('http://localhost:8000/online_users').then(function (response) {
         return response;
       }).then(function (response) {
-        console.log(response.data);
+        _this.online_users = response.data;
       });
     },
     getUserData: function getUserData() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('http://localhost:8000/user').then(function (response) {
-        _this.name = response.data.name;
-        _this.user_id = response.data.id;
+        _this2.name = response.data.name;
+        _this2.user_id = response.data.id;
+
+        _this2.getCurrentUserLocation();
       });
     },
     getCurrentUserLocation: function getCurrentUserLocation() {
@@ -1951,26 +1954,25 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     updateUserPosition: function updateUserPosition(position) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.lat = position.coords.latitude;
       this.lng = position.coords.longitude;
-      console.log(this.user_id);
       axios.post(this.web_url + 'user_geopoint/' + this.user_id, {
         lat: this.lat,
         lng: this.lng
       }).then(function (response) {
-        _this2.getStoredPosition();
+        _this3.getStoredPosition();
       });
     },
     getStoredPosition: function getStoredPosition() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get(this.web_url + 'user_geopoint/' + this.user_id).then(function (response) {
         if (response.status === 200) {
-          _this3.createMap();
+          _this4.createMap();
 
-          _this3.createUserMarker();
+          _this4.createUserMarker();
         }
       })["catch"](function (error) {});
     },
@@ -1985,6 +1987,8 @@ __webpack_require__.r(__webpack_exports__);
       tiles.addTo(this.mymap);
     },
     createUserMarker: function createUserMarker() {
+      var _this5 = this;
+
       var LeafIcon = L.Icon.extend({
         options: {
           shadowUrl: 'leaf-shadow.png',
@@ -2009,9 +2013,11 @@ __webpack_require__.r(__webpack_exports__);
           orangeIcon = new LeafIcon({
         iconUrl: 'leaf-orange.png'
       });
-      L.marker([this.lat, this.lng], {
-        icon: greenIcon
-      }).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
+      this.online_users.forEach(function (item) {
+        L.marker([item.geopoint.lat, item.geopoint.lng], {
+          icon: greenIcon
+        }).addTo(_this5.mymap).bindPopup('<span class="font-weight-bold">' + _this5.name + '</span>' + '<br>Come Chill');
+      });
     }
   }
 });
