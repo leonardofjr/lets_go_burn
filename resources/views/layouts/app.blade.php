@@ -9,7 +9,54 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+        <!-- Styles -->
+        <style>
+            html, body {
+                background-color: #fff;
+                color: #636b6f;
+                font-family: 'Nunito', sans-serif;
+                font-weight: 200;
+                height: 100vh;
+                margin: 0;
+            }
 
+            .full-height {
+                height: 100vh;
+            }
+
+            .flex-center {
+                align-items: center;
+                display: flex;
+                justify-content: center;
+            }
+
+            .position-ref {
+                position: relative;
+            }
+
+
+            .content {
+                text-align: center;
+            }
+
+            .title {
+                font-size: 48px;
+            }
+
+            .links > a {
+                color: #636b6f;
+                padding: 0 25px;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: .1rem;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+            .m-b-md {
+                margin-bottom: 30px;
+            }
+        </style>
     <!-- Scripts -->
      <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -73,6 +120,29 @@ let lat, lng;
     }
 
     init();
+</script>
+
+<script type="text/javascript">
+    const url = 'http://localhost:8000/user';
+    function createMap(data) {
+        console.log(data);
+        this.mymap = L.map('homeMap').setView([1, 1], 13);
+    // this.mymap.locate({setView: true, maxZoom: 16});
+
+        const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+        let tiles = L.tileLayer(tileUrl, {attribution});
+        tiles.addTo(this.mymap)
+    }
+    
+
+    $.ajax({
+        url: url,
+        
+    }).done(response => {
+        createMap(response);
+    })
 </script>
 </body>
 

@@ -51,19 +51,7 @@
                     <div id="homeMap"></div>
                 </main>
 
-                <script>
-                    function createMap() {
-                        this.mymap = L.map('homeMap').setView([1, 1], 13);
-                    // this.mymap.locate({setView: true, maxZoom: 16});
-            
-                        const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-                        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-                        let tiles = L.tileLayer(tileUrl, {attribution});
-                        tiles.addTo(this.mymap)
-                    }
-                    createMap();
-                </script>
             @else
                 <div class="flex-center position-ref full-height">
                     <div class="content">
