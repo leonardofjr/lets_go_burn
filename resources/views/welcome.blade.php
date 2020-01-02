@@ -26,10 +26,8 @@
                                             </a>
             
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                                <a href="{{ url('/user_panel') }}" class="nav-link">Settings</a>
-                                            </div>
+                                                <a href="{{ url('/user_panel') }}" class="dropdown-item">Settings</a>
             
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                                    onclick="event.preventDefault();
                                                                  document.getElementById('logout-form').submit();">
