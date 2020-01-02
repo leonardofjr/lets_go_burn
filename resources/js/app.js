@@ -24,6 +24,7 @@ Vue.use(VueRouter)
 
 import App from './components/App'
 import UserPanel from './components/UserPanel'
+import Admin from './components/Admin'
 import Studio from './components/Studio'
 
 /**
@@ -34,12 +35,28 @@ import Studio from './components/Studio'
 
 const routes = [
     { path: '/', component: UserPanel },
+    { path: '/users', component: Admin, meta: { requiresAuth: true, adminAuth: true} },
     { path: '/profile', component: Studio },
   ]
   
 const router = new VueRouter({
-    routes // short for `routes: routes`
+    routes, // short for `routes: routes`
+   // mode: 'history',
+
 })
+
+router.beforeEach((to, from, next) => {
+    if(to.meta.requiresAuth) {
+      const authUser = JSON.parse(window.localStorage.getItem('nsUser'));
+      if(authUser.role === 'admin') {
+          next();
+      } else {
+          next('/')
+      }
+    } else {
+        next();
+    }
+});
 
 // inject a handler for `myOption` custom option
 Vue.mixin({

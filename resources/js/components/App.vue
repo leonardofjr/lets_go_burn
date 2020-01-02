@@ -17,7 +17,8 @@
                                     <!-- use router-link component for navigation. -->
                                     <!-- specify the link by passing the `to` prop. -->
                                     <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
-                                <li><router-link to="/" exact>User</router-link></li>
+                                <li><router-link to="/" exact>Profile</router-link></li>
+                                <li v-if="role == 'admin'"><router-link to="/users" exact>Users</router-link></li>
                                 <li><router-link to="/studio" exact>Studio</router-link></li>
 
                             </ul>
@@ -30,17 +31,45 @@
 </template>
 
 <script>
+
     export default {
-        data() {
-            return {
+            data() { return {
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                studioName: '',
+                streetAddress: '',
+                role: '',
 
             }
         },
         mounted() {
-        
-
-
+            this.getUserData();
         },
+
+          methods: {
+            getUserData() {
+                let url = 'http://localhost:8000/user';
+                let authUser = {};
+                axios
+                .get(url)
+                .then(response => {
+                    console.log(response);
+                    this.firstName = response.data.fname;
+                    this.lname = response.data.lname;
+                    this.phone = response.data.phone;
+                    this.email = response.data.email;
+                    this.role = response.data.roles[0].name;
+                    authUser.role = response.data.roles[0].name;
+                    authUser.authenticated = response.data.authenticated;
+                    window.localStorage.setItem('nsUser', JSON.stringify(authUser));
+                    console.log(authUser);
+
+                })
+            },
+          }
+
 
      
     }

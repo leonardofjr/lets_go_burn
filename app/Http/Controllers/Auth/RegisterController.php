@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Role;
 use App\UserGeopoint;
+use Auth;
+use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -64,13 +67,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $user = User::create([
+            'fname' => $data['fname'],
+            'email' => $data['email'],   
+            'password' => Hash::make($data['password']),
+        ]);
+        $role = Role::select('id')->where('name', 'user')->first();
+
+        $user->roles()->attach($role);
+        return $user;
+        /*
         return User::create([
             'fname' => $data['fname'],
-            'email' => $data['email'],
+            'email' => $data['email'],   
             'password' => Hash::make($data['password']),
         ], UserGeopoint::create([
             'lat' => $data['_lat'],
             'lng' => $data['_lng'],
-        ]));
+        ], DB::table('user_role')->insert(
+            [
+                'user_id' => 2,
+                'role_id' => 2 // User
+            ]
+        ))); */
     }
 }

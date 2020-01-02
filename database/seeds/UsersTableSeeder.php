@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
+use App\User;
+use App\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -12,12 +13,31 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com',
+        User::truncate();
+        $adminRole = Role::where('name', 'admin')->first();
+        $producerRole = Role::where('name', 'producer')->first();
+        $userRole = Role::where('name', 'user')->first();
+
+        $admin = User::create([
+            'fname' => 'Leo',
+            'email' => 'leo@webmaster.com',
             'password' => bcrypt('password'),
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
+
+        $producer = User::create([
+            'fname' => 'Miguel',
+            'email' => 'miguel@webmaster.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $user = User::create([
+            'fname' => 'Fernando',
+            'email' => 'fernando@webmaster.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $admin->roles()->attach($adminRole);
+        $producer->roles()->attach($producerRole);
+        $user->roles()->attach($userRole);
     }
 }

@@ -6,27 +6,27 @@
             <div class="form-group row">
                 <label for="firstName" class="col-md-3 col-form-label">First Name</label>
                 <div class="col-md-9">
-                    <input id="firstName" type="text" class="form-control" v-model="firstName" name="firstName" required autocomplete="firstName" autofocus>
+                    <input id="firstName" type="text" class="form-control" v-model="this.$parent.firstName" name="firstName" required autocomplete="firstName" autofocus>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="lastName" class="col-md-3 col-form-label">Last Name</label>
                 <div class="col-md-9">
-                    <input id="lastName" type="text" class="form-control" v-model="lastName" required autocomplete="lastName" autofocus>
+                    <input id="lastName" type="text" class="form-control" v-model="this.$parent.lastName" required autocomplete="lastName" autofocus>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="email" class="col-md-3 col-form-label">Email</label>
                 <div class="col-md-9">
-                    <input id="email" type="tel" class="form-control" v-model="email" required autocomplete="email" autofocus>
+                    <input id="email" type="tel" class="form-control" v-model="this.$parent.email" required autocomplete="email" autofocus>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="phone" class="col-md-3 col-form-label">Phone</label>
                 <div class="col-md-9">
-                    <input id="phone" type="tel" class="form-control" v-model="phone" required autocomplete="phone" autofocus>
+                    <input id="phone" type="tel" class="form-control" v-model="this.$parent.phone" required autocomplete="phone" autofocus>
                 </div>
             </div>
             <hr>
@@ -35,7 +35,7 @@
             <div class="form-group row">
                 <label for="studioName" class="col-md-3 col-form-label">Studio Name</label>
                 <div class="col-md-9">
-                    <input id="studioName" type="text" class="form-control" v-model="studioName" name="studioName" required autocomplete="studioName" autofocus>
+                    <input id="studioName" type="text" class="form-control" v-model="this.$parent.studioName" name="studioName" required autocomplete="studioName" autofocus>
                 </div>
             </div>
             <div class="form-group row">
@@ -61,35 +61,16 @@ import { create } from 'domain';
 
     export default {
             data() { return {
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                studioName: '',
                 streetAddress: '',
                 lat: '',
                 lon: '',
-                user: undefined,
                 promise: undefined,
             }
         },
         mounted() {
-            this.getUserData();
+            
         },
         methods: {
-            getUserData() {
-                let url = 'http://localhost:8000/user';
-                
-                axios
-                .get(url)
-                .then(response => {
-                    console.log(response);
-                    this.firstName = response.data.fname;
-                    this.lname = response.data.lname;
-                    this.phone = response.data.phone;
-                    this.email = response.data.email;
-                })
-            },
 
             search() {
                     let query = this.streetAddress;

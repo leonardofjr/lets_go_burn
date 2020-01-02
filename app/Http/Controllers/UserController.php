@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\UserGeopoint;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class UserController extends Controller
 {
@@ -31,9 +32,10 @@ class UserController extends Controller
     {
         $user_id = Auth::id();
         $user = User::findOrFail($user_id);
-
+        $user->roles->first();
+        $user['authenticated'] = Auth::check();
         return response()->json(
-            $user
+           $user
         );
     }
 
