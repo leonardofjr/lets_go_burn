@@ -7,11 +7,13 @@
         data() {
             return {
                 mymap: undefined,
-                lat: 1,
-                lng: 1,
+                lat: undefined,
+                lng: undefined,
                 name: undefined,
                 user_id: undefined,
                 online_users: undefined,
+                _token: this._token = $('meta[name="csrf-token"').attr('content')
+
             }
         },
         mounted() {
@@ -51,11 +53,19 @@
             },
 
             updateUserPosition(position) {
-                this.lat = position.coords.latitude;
-                this.lng = position.coords.longitude;
+                let data = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
 
+                }
+                const headers = {
+                    'X-CSRF-TOKEN': this._token
+                }
+                console.log(this._token);
                 axios
-                .post(this.web_url + 'user_geopoint/' + this.user_id, {lat: this.lat , lng: this.lng})
+                .post(this.web_url + 'user_geopoint/' + this.user_id, data, {
+                    headers: headers,
+                })
                 .then(response => {
                     this.getStoredPosition();
 
@@ -93,12 +103,12 @@
       
                 let LeafIcon = L.Icon.extend({
                 options: { 
-                        shadowUrl: 'leaf-shadow.png',
-                        iconSize:     [38, 95], // size of the icon
+                     //   shadowUrl: 'leaf-shadow.png',
+                        iconSize:     [50, 50], // size of the icon
                         shadowSize:   [50, 64], // size of the shadow
-                        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+                        iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
                         shadowAnchor: [4, 62],  // the same for the shadow
-                        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                        popupAnchor:  [-0, -25] // point from which the popup should open relative to the iconAnchor
                     }
                 });
 

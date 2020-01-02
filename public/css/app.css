@@ -11106,6 +11106,11 @@ body {
 }
 
 #mapid {
-  height: 500px;
+  height: 250px;
+  width: 250px;
+}
+
+#homeMap {
+  height: 100vh;
 }
 

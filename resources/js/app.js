@@ -23,8 +23,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import App from './components/App'
-import Profile from './components/Profile'
-import Tokers from './components/Tokers'
+import UserPanel from './components/UserPanel'
+import Studio from './components/Studio'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,8 +33,8 @@ import Tokers from './components/Tokers'
  */
 
 const routes = [
-    { path: '/', component: Tokers },
-    { path: '/profile', component: Profile },
+    { path: '/', component: UserPanel },
+    { path: '/profile', component: Studio },
   ]
   
 const router = new VueRouter({
