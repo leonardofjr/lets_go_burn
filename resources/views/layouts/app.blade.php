@@ -131,7 +131,7 @@ let lat, lng;
         return response.json();
     })
 
-    let users = fetch(rootUrl + 'online_users')
+    let users = fetch(rootUrl + 'producers')
     .then(response => {
         return response.json();
     })

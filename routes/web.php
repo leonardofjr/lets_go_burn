@@ -19,6 +19,6 @@ Auth::routes();
 
 Route::get('/user_panel', 'HomeController@index')->name('User Panel')->middleware('cors');
 Route::get('/user', 'UserController@index');
-Route::get('/online_users', 'UserController@getOnlineUsers');
+Route::get('/producers', 'UserController@getProducers');
 Route::get('/user_geopoint/{id}', 'UserGeopointController@show');
 Route::post('/user_geopoint/{id}', 'UserGeopointController@update');

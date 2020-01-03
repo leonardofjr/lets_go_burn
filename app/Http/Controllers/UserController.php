@@ -16,14 +16,17 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getOnlineUsers() {
-        $users = User::all();
+    public function getProducers() {
+        $producers = User::all();
         $data = [];
-        foreach ($users as $key => $user ) {
+        foreach ($producers as $key => $producer ) {
+            if ($producer->roles->first()->name == 'producer') {
              array_push($data, [
-                'user' => $user,
-                'geopoints' => $user->geopoints->where('id', $user->id)->first()
+                'user' => $producer,
+                'geopoints' => $producer->geopoints->where('id', $producer->id)->first(),
+                'role' => $producer->roles->first(),
              ]);
+            }
         }
 
         return response()->json(
