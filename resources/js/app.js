@@ -36,7 +36,7 @@ import Studio from './components/Studio'
 const routes = [
     { path: '/', component: UserPanel },
     { path: '/users', component: Admin, meta: { requiresAuth: true, adminAuth: true} },
-    { path: '/profile', component: Studio },
+    { path: '/studio', component: Studio, meta: { requiresAuth: true, producerAuth: true} },
   ]
   
 const router = new VueRouter({
@@ -47,16 +47,26 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if(to.meta.requiresAuth) {
-      const authUser = JSON.parse(window.localStorage.getItem('nsUser'));
-      if(authUser.role === 'admin') {
-          next();
-      } else {
-          next('/')
-      }
+            const authUser = JSON.parse(window.localStorage.getItem('nsUser'));
+            if (to.meta.adminAuth) {
+                if(authUser.role === 'admin') {
+                    next();
+                } else {
+                        next('/')
+                }
+            }
+            if (to.meta.producerAuth) {
+                if(authUser.role === 'producer') {
+                    next();
+                } else {
+                        next('/')
+                }
+            }
     } else {
         next();
     }
 });
+
 
 // inject a handler for `myOption` custom option
 Vue.mixin({

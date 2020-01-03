@@ -139,7 +139,7 @@ let lat, lng;
 
     function init() {
         createMap();
-        createUserMarker();
+        createProducerMarkers();
     }
 
     function createMap(data) {
@@ -155,7 +155,7 @@ let lat, lng;
         })
     }
     
-    function createUserMarker() {
+    function createProducerMarkers() {
         users.then(data => {
             console.log(data);
             let LeafIcon = L.Icon.extend({

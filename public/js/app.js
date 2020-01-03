@@ -2055,136 +2055,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      mymap: undefined,
-      lat: undefined,
-      lng: undefined,
-      name: undefined,
-      user_id: undefined,
-      online_users: undefined,
-      _token: this._token = $('meta[name="csrf-token"').attr('content')
-    };
-  },
-  mounted: function mounted() {
-    this.getAllOnlineUsers();
-    this.getUserData();
-  },
-  methods: {
-    getAllOnlineUsers: function getAllOnlineUsers() {
-      var _this = this;
-
-      axios.get('http://localhost:8000/online_users').then(function (response) {
-        return response;
-      }).then(function (response) {
-        _this.online_users = response.data;
-      });
-    },
-    getUserData: function getUserData() {
-      var _this2 = this;
-
-      axios.get('http://localhost:8000/user').then(function (response) {
-        _this2.name = response.data.name;
-        _this2.user_id = response.data.id;
-
-        _this2.getCurrentUserLocation();
-      });
-    },
-    getCurrentUserLocation: function getCurrentUserLocation() {
-      if (navigator.geolocation) {
-        // Utilizing HTML Geolocation API to locate user's position
-        return navigator.geolocation.getCurrentPosition(this.updateUserPosition);
-      } else {
-        alert("Geolocation is not supported by this browser.");
-      }
-    },
-    updateUserPosition: function updateUserPosition(position) {
-      var _this3 = this;
-
-      var data = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      var headers = {
-        'X-CSRF-TOKEN': this._token
-      };
-      axios.post(this.web_url + 'user_geopoint/' + this.user_id, data, {
-        headers: headers
-      }).then(function (response) {
-        _this3.getStoredPosition();
-      });
-    },
-    getStoredPosition: function getStoredPosition() {
-      var _this4 = this;
-
-      axios.get(this.web_url + 'user_geopoint/' + this.user_id).then(function (response) {
-        if (response.status === 200) {
-          _this4.createMap();
-
-          _this4.createUserMarker();
-        }
-      })["catch"](function (error) {});
-    },
-    createMap: function createMap() {
-      this.mymap = L.map('mapid').setView([this.lat, this.lng], 13); // this.mymap.locate({setView: true, maxZoom: 16});
-
-      var attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-      var tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      var tiles = L.tileLayer(tileUrl, {
-        attribution: attribution
-      });
-      tiles.addTo(this.mymap);
-    },
-    createUserMarker: function createUserMarker() {
-      var _this5 = this;
-
-      var LeafIcon = L.Icon.extend({
-        options: {
-          //   shadowUrl: 'leaf-shadow.png',
-          iconSize: [50, 50],
-          // size of the icon
-          shadowSize: [50, 64],
-          // size of the shadow
-          iconAnchor: [25, 25],
-          // point of the icon which will correspond to marker's location
-          shadowAnchor: [4, 62],
-          // the same for the shadow
-          popupAnchor: [-0, -25] // point from which the popup should open relative to the iconAnchor
-
-        }
-      });
-      var greenIcon = new LeafIcon({
-        iconUrl: 'leaf-green.png'
-      }),
-          redIcon = new LeafIcon({
-        iconUrl: 'leaf-red.png'
-      }),
-          orangeIcon = new LeafIcon({
-        iconUrl: 'leaf-orange.png'
-      });
-      this.online_users.forEach(function (item) {
-        L.marker([item.geopoint.lat, item.geopoint.lng], {
-          icon: greenIcon
-        }).addTo(_this5.mymap).bindPopup('<span class="font-weight-bold">' + _this5.name + '</span>' + '<br>Come Chill');
-      });
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UserPanel.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/UserPanel.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var domain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! domain */ "./node_modules/domain-browser/source/index.js");
-/* harmony import */ var domain__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(domain__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2209,48 +2079,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       streetAddress: '',
       lat: '',
       lon: '',
-      promise: undefined
+      promise: undefined,
+      _token: this._token = $('meta[name="csrf-token"').attr('content')
     };
   },
   mounted: function mounted() {},
@@ -2321,8 +2157,73 @@ __webpack_require__.r(__webpack_exports__);
     },
     destroyMapElement: function destroyMapElement() {
       $('#mapid').remove();
+    },
+    getCurrentUserLocation: function getCurrentUserLocation() {
+      if (navigator.geolocation) {
+        // Utilizing HTML Geolocation API to locate user's position
+        return navigator.geolocation.getCurrentPosition(this.updateUserPosition);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UserPanel.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/UserPanel.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var domain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! domain */ "./node_modules/domain-browser/source/index.js");
+/* harmony import */ var domain__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(domain__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  mounted: function mounted() {},
+  methods: {}
 });
 
 /***/ }),
@@ -38234,15 +38135,17 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _c(
-            "li",
-            [
-              _c("router-link", { attrs: { to: "/studio", exact: "" } }, [
-                _vm._v("Studio")
-              ])
-            ],
-            1
-          )
+          _vm.role == "producer"
+            ? _c(
+                "li",
+                [
+                  _c("router-link", { attrs: { to: "/studio", exact: "" } }, [
+                    _vm._v("Studio")
+                  ])
+                ],
+                1
+              )
+            : _vm._e()
         ])
       ])
     ]),
@@ -38298,7 +38201,107 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "mapid" } })
+  return _c("div", [
+    _c("hr"),
+    _vm._v(" "),
+    _c("h3", [_vm._v("Studio Information")]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-3 col-form-label",
+          attrs: { for: "studioName" }
+        },
+        [_vm._v("Studio Name")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-9" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.studioName,
+              expression: "this.$parent.studioName"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            id: "studioName",
+            type: "text",
+            name: "studioName",
+            required: "",
+            autocomplete: "studioName",
+            autofocus: ""
+          },
+          domProps: { value: this.$parent.studioName },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "studioName", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-3 col-form-label",
+          attrs: { for: "streetAddress" }
+        },
+        [_vm._v("Street Address")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-9" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.streetAddress,
+              expression: "streetAddress"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            id: "streetAddress",
+            type: "text",
+            name: "streetAddress",
+            required: "",
+            autocomplete: "streetAddress",
+            autofocus: ""
+          },
+          domProps: { value: _vm.streetAddress },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.streetAddress = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("button", { on: { click: _vm.search } }, [_vm._v("Search")])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "mapContainer" } }),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h3", [_vm._v("Studio Rates")]),
+    _vm._v(" "),
+    _c("hr")
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38480,107 +38483,7 @@ var render = function() {
           }
         })
       ])
-    ]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h3", [_vm._v("Studio Information")]),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-md-3 col-form-label",
-          attrs: { for: "studioName" }
-        },
-        [_vm._v("Studio Name")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-9" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: this.$parent.studioName,
-              expression: "this.$parent.studioName"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            id: "studioName",
-            type: "text",
-            name: "studioName",
-            required: "",
-            autocomplete: "studioName",
-            autofocus: ""
-          },
-          domProps: { value: this.$parent.studioName },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(this.$parent, "studioName", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-md-3 col-form-label",
-          attrs: { for: "streetAddress" }
-        },
-        [_vm._v("Street Address")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-9" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.streetAddress,
-              expression: "streetAddress"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            id: "streetAddress",
-            type: "text",
-            name: "streetAddress",
-            required: "",
-            autocomplete: "streetAddress",
-            autofocus: ""
-          },
-          domProps: { value: _vm.streetAddress },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.streetAddress = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("button", { on: { click: _vm.search } }, [_vm._v("Search")])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { attrs: { id: "mapContainer" } }),
-    _vm._v(" "),
-    _c("hr"),
-    _vm._v(" "),
-    _c("h3", [_vm._v("Studio Rates")]),
-    _vm._v(" "),
-    _c("hr")
+    ])
   ])
 }
 var staticRenderFns = []
@@ -53679,8 +53582,12 @@ var routes = [{
     adminAuth: true
   }
 }, {
-  path: '/profile',
-  component: _components_Studio__WEBPACK_IMPORTED_MODULE_6__["default"]
+  path: '/studio',
+  component: _components_Studio__WEBPACK_IMPORTED_MODULE_6__["default"],
+  meta: {
+    requiresAuth: true,
+    producerAuth: true
+  }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   routes: routes // short for `routes: routes`
@@ -53691,10 +53598,20 @@ router.beforeEach(function (to, from, next) {
   if (to.meta.requiresAuth) {
     var authUser = JSON.parse(window.localStorage.getItem('nsUser'));
 
-    if (authUser.role === 'admin') {
-      next();
-    } else {
-      next('/');
+    if (to.meta.adminAuth) {
+      if (authUser.role === 'admin') {
+        next();
+      } else {
+        next('/');
+      }
+    }
+
+    if (to.meta.producerAuth) {
+      if (authUser.role === 'producer') {
+        next();
+      } else {
+        next('/');
+      }
     }
   } else {
     next();
