@@ -17,12 +17,18 @@ class UserController extends Controller
      */
 
     public function getOnlineUsers() {
-        $user = User::all();
-        $geopoint = Geopoint::all();
-        return response()->json(
-            $geopoint
-        );
+        $users = User::all();
+        $data = [];
+        foreach ($users as $key => $user ) {
+             array_push($data, [
+                'user' => $user,
+                'geopoints' => $user->geopoints->where('id', $user->id)->first()
+             ]);
+        }
 
+        return response()->json(
+            $data
+        );
     }
     public function index()
     {

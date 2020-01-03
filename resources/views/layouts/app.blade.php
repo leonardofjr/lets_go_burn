@@ -157,6 +157,7 @@ let lat, lng;
     
     function createUserMarker() {
         users.then(data => {
+            console.log(data);
             let LeafIcon = L.Icon.extend({
             options: { 
                 //   shadowUrl: 'leaf-shadow.png',
@@ -170,8 +171,9 @@ let lat, lng;
 
             let marker = new LeafIcon({iconUrl: 'marker.png'})
 
+  
             data.forEach((item) => {
-                L.marker([ item.lat,  item.lon], {icon: marker}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
+                L.marker([ item.geopoints.lat,  item.geopoints.lon], {icon: marker}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + item.user.fname + '</span>' + '<br>Come Chill');
             })
         });
     }
