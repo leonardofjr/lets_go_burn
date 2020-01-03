@@ -45,6 +45,10 @@ class User extends Authenticatable
             return $this->belongsToMany('App\Geopoint', 'geopoint_user');
         }
 
+        public function studio() {
+            return $this->hasOne('App\Studio', 'user_id');
+        }
+
         public function isOnline() {
             return Cache::has('user-is-online-' . $this->id);
         }

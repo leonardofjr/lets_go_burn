@@ -9,10 +9,18 @@
                     <input id="studioName" type="text" class="form-control" v-model="this.$parent.studioName" name="studioName" required autocomplete="studioName" autofocus>
                 </div>
             </div>
+            
+            <div class="form-group row">
+                <label for="phone" class="col-md-3 col-form-label">Phone</label>
+                <div class="col-md-9">
+                    <input id="phone" type="tel" class="form-control" v-model="this.$parent.phone" required autocomplete="phone" autofocus>
+                </div>
+            </div>
+
             <div class="form-group row">
                 <label for="streetAddress" class="col-md-3 col-form-label">Street Address</label>
                 <div class="col-md-9">
-                    <input id="streetAddress" type="text" class="form-control" v-model="streetAddress" name="streetAddress" required autocomplete="streetAddress" autofocus>
+                    <input id="streetAddress" type="text" class="form-control" v-model="this.$parent.streetAddress" name="streetAddress" required autocomplete="streetAddress" autofocus>
                     <button v-on:click="search">Search</button>
                 </div>
             </div>
@@ -30,7 +38,6 @@
     export default {
         data() {
             return {
-                streetAddress: '',
                 lat: '',
                 lon: '',
                 promise: undefined,

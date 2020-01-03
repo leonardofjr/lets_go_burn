@@ -46,7 +46,15 @@
                 </header>
 
                 <main>
-                    <div id="homeMap"></div>
+                    <div class="row">
+                        <div class="col-md-2" id="pane">
+                            <div class="section_result_content">
+
+                            </div>
+                        </div>
+  
+                        <div class="col-md-10" id="homeMap"></div>
+                    </div>
                 </main>
 
 

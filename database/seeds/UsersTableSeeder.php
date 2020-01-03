@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\User;
 use App\Role;
+use App\Studio;
 use App\Geopoint;
 
 class UsersTableSeeder extends Seeder
@@ -15,11 +16,17 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::truncate();
+        
         $adminRole = Role::where('name', 'admin')->first();
         $producerRole = Role::where('name', 'producer')->first();
         $userRole = Role::where('name', 'user')->first();
+
+        /* Getting geopoints table data */
         $geopoint = Geopoint::get();
 
+        /* Getting studios table data */
+
+       /* Creating user table data */ 
         $admin = User::create([
             'fname' => 'Leo',
             'email' => 'leo@webmaster.com',
@@ -37,6 +44,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'fernando@webmaster.com',
             'password' => bcrypt('password'),
         ]);
+
+
 
         $admin->roles()->attach($adminRole);
         $producer->roles()->attach($producerRole);

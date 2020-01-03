@@ -55,11 +55,14 @@
                 axios
                 .get(url)
                 .then(response => {
+                    console.log(response);
                     this.firstName = response.data.fname;
                     this.lname = response.data.lname;
-                    this.phone = response.data.phone;
                     this.email = response.data.email;
                     this.role = response.data.roles[0].name;
+                    this.studioName = response.data.studio.name;
+                    this.streetAddress = response.data.studio.address;
+                    this.phone = response.data.studio.phone;
                     authUser.role = response.data.roles[0].name;
                     authUser.authenticated = response.data.authenticated;
                     window.localStorage.setItem('nsUser', JSON.stringify(authUser));

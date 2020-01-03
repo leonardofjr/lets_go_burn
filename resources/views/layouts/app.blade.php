@@ -124,8 +124,11 @@ let lat, lng;
 </script>
 
 <script type="text/javascript">
+
+    /*** Root Address ***/
     const rootUrl = 'http://localhost:8000/';
     
+    /*** Fetching Data from backend ***/
     let user = fetch(rootUrl + 'user')
     .then(response => {
         return response.json();
@@ -136,11 +139,15 @@ let lat, lng;
         return response.json();
     })
 
+    /*** Initilization ***/
 
     function init() {
-        createMap();
-        createProducerMarkers();
+       // createMap();
+      //  createProducerMarkers();
+        createPaneElements();
     }
+
+    /*** Map Creation ***/
 
     function createMap(data) {
         user.then(data => {
@@ -154,10 +161,11 @@ let lat, lng;
             tiles.addTo(this.mymap)
         })
     }
-    
+
+    /*** Creation of Markers on map ***/
+
     function createProducerMarkers() {
         users.then(data => {
-            console.log(data);
             let LeafIcon = L.Icon.extend({
             options: { 
                 //   shadowUrl: 'leaf-shadow.png',
@@ -173,12 +181,31 @@ let lat, lng;
 
   
             data.forEach((item) => {
-                L.marker([ item.geopoints.lat,  item.geopoints.lon], {icon: marker}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + item.user.fname + '</span>' + '<br>Come Chill');
+                L.marker([ item.geopoints.lat,  item.geopoints.lon], {icon: marker}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + item.studio.name + '</span>'  + '<br>' + item.studio.address + '<br>' + item.studio.phone);
             })
         });
     }
+
     
+    /*** Pane Creation ***/
+
+    function createPaneElements() {
+        users.then(data => {
+            let pane = $('.section_result_content');
+            data.forEach((item) => {
+                sectionResultContent = '<div class"section_result_details_container>'
+                                           + '<b>' + item.studio.name + '</b><br>'
+                                           + '<span>' + item.studio.address + '</span><br>'
+                                           + '<span>' + item.studio.phone + '</span><br>'
+                                        '</div>';
+
+                pane.append(sectionResultContent)
+            });
+            
+        });
+    }
     init();
+    
 
 </script>
 </body>

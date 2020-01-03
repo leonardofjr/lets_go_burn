@@ -2027,11 +2027,14 @@ __webpack_require__.r(__webpack_exports__);
       var url = 'http://localhost:8000/user';
       var authUser = {};
       axios.get(url).then(function (response) {
+        console.log(response);
         _this.firstName = response.data.fname;
         _this.lname = response.data.lname;
-        _this.phone = response.data.phone;
         _this.email = response.data.email;
         _this.role = response.data.roles[0].name;
+        _this.studioName = response.data.studio.name;
+        _this.streetAddress = response.data.studio.address;
+        _this.phone = response.data.studio.phone;
         authUser.role = response.data.roles[0].name;
         authUser.authenticated = response.data.authenticated;
         window.localStorage.setItem('nsUser', JSON.stringify(authUser));
@@ -2079,10 +2082,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      streetAddress: '',
       lat: '',
       lon: '',
       promise: undefined,
@@ -2182,12 +2192,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var domain__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! domain */ "./node_modules/domain-browser/source/index.js");
 /* harmony import */ var domain__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(domain__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -38253,6 +38257,44 @@ var render = function() {
     _c("div", { staticClass: "form-group row" }, [
       _c(
         "label",
+        { staticClass: "col-md-3 col-form-label", attrs: { for: "phone" } },
+        [_vm._v("Phone")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-9" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.phone,
+              expression: "this.$parent.phone"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            id: "phone",
+            type: "tel",
+            required: "",
+            autocomplete: "phone",
+            autofocus: ""
+          },
+          domProps: { value: this.$parent.phone },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "phone", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
         {
           staticClass: "col-md-3 col-form-label",
           attrs: { for: "streetAddress" }
@@ -38266,8 +38308,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.streetAddress,
-              expression: "streetAddress"
+              value: this.$parent.streetAddress,
+              expression: "this.$parent.streetAddress"
             }
           ],
           staticClass: "form-control",
@@ -38279,13 +38321,13 @@ var render = function() {
             autocomplete: "streetAddress",
             autofocus: ""
           },
-          domProps: { value: _vm.streetAddress },
+          domProps: { value: this.$parent.streetAddress },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.streetAddress = $event.target.value
+              _vm.$set(this.$parent, "streetAddress", $event.target.value)
             }
           }
         }),
@@ -38441,44 +38483,6 @@ var render = function() {
                 return
               }
               _vm.$set(this.$parent, "email", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-3 col-form-label", attrs: { for: "phone" } },
-        [_vm._v("Phone")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-9" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: this.$parent.phone,
-              expression: "this.$parent.phone"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            id: "phone",
-            type: "tel",
-            required: "",
-            autocomplete: "phone",
-            autofocus: ""
-          },
-          domProps: { value: this.$parent.phone },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(this.$parent, "phone", $event.target.value)
             }
           }
         })

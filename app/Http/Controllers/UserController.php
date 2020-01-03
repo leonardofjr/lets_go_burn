@@ -25,6 +25,7 @@ class UserController extends Controller
                 'user' => $producer,
                 'geopoints' => $producer->geopoints->where('id', $producer->id)->first(),
                 'role' => $producer->roles->first(),
+                'studio' => $producer->studio->first(),
              ]);
             }
         }
@@ -39,6 +40,7 @@ class UserController extends Controller
         $user = User::findOrFail($user_id);
         $user->roles->first();
         $user->geopoints->first();
+        $user->studio->first();
         $user['authenticated'] = Auth::check();
         return response()->json(
            $user

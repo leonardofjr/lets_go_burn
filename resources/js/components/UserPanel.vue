@@ -23,12 +23,6 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="phone" class="col-md-3 col-form-label">Phone</label>
-                <div class="col-md-9">
-                    <input id="phone" type="tel" class="form-control" v-model="this.$parent.phone" required autocomplete="phone" autofocus>
-                </div>
-            </div>
 
         </div>
 </template>
