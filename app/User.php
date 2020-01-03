@@ -40,9 +40,9 @@ class User extends Authenticatable
     /**
      * Get the users' geopoint.
      */
-        public function geopoint()
+        public function geopoints()
         {
-            return $this->hasOne('App\UserGeopoint', 'id');
+            return $this->belongsToMany('App\Geopoint', 'geopoint_user');
         }
 
         public function isOnline() {
@@ -50,6 +50,6 @@ class User extends Authenticatable
         }
 
         public function roles() {
-            return $this->belongsToMany('App\Role', 'user_role');
+            return $this->belongsToMany('App\Role', 'role_user');
         }
 }

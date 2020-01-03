@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserGeopointsTable extends Migration
+class CreateRoleUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateUserGeopointsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_geopoints', function (Blueprint $table) {
+        Schema::create('role_user', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id');
+            $table->integer('role_id');
             $table->timestamps();
-            $table->string('lat')->default(1);
-            $table->string('lng')->default(1);
         });
     }
 
@@ -28,6 +28,6 @@ class CreateUserGeopointsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_geopoints');
+        Schema::dropIfExists('role_user');
     }
 }

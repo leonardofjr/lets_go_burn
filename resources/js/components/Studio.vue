@@ -61,7 +61,6 @@
                 const headers = {
                     'X-CSRF-TOKEN': this._token
                 }
-                console.log(this._token);
                 axios
                 .post(this.web_url + 'user_geopoint/' + this.user_id, data, {
                     headers: headers,

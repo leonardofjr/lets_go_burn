@@ -124,26 +124,60 @@ let lat, lng;
 </script>
 
 <script type="text/javascript">
-    const url = 'http://localhost:8000/user';
+    const rootUrl = 'http://localhost:8000/';
+    
+    let user = fetch(rootUrl + 'user')
+    .then(response => {
+        return response.json();
+    })
+
+    let users = fetch(rootUrl + 'online_users')
+    .then(response => {
+        return response.json();
+    })
+
+
+    function init() {
+        createMap();
+        createUserMarker();
+    }
+
     function createMap(data) {
-        console.log(data);
-        this.mymap = L.map('homeMap').setView([1, 1], 13);
-    // this.mymap.locate({setView: true, maxZoom: 16});
+        user.then(data => {
+            this.mymap = L.map('homeMap').setView([data.geopoints[0].lat, data.geopoints[0].lon], 13);
+          // this.mymap.locate({setView: true, maxZoom: 16});
 
-        const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+            const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-        let tiles = L.tileLayer(tileUrl, {attribution});
-        tiles.addTo(this.mymap)
+            let tiles = L.tileLayer(tileUrl, {attribution});
+            tiles.addTo(this.mymap)
+        })
     }
     
+    function createUserMarker() {
+        users.then(data => {
+            let LeafIcon = L.Icon.extend({
+            options: { 
+                //   shadowUrl: 'leaf-shadow.png',
+                    iconSize:     [50, 50], // size of the icon
+                    shadowSize:   [50, 64], // size of the shadow
+                    iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [4, 62],  // the same for the shadow
+                    popupAnchor:  [-0, -25] // point from which the popup should open relative to the iconAnchor
+                }
+            });
 
-    $.ajax({
-        url: url,
-        
-    }).done(response => {
-        createMap(response);
-    })
+            let marker = new LeafIcon({iconUrl: 'marker.png'})
+
+            data.forEach((item) => {
+                L.marker([ item.lat,  item.lon], {icon: marker}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
+            })
+        });
+    }
+    
+    init();
+
 </script>
 </body>
 

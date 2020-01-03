@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\UserGeopoint;
+use App\Geopoint;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
@@ -17,15 +17,11 @@ class UserController extends Controller
      */
 
     public function getOnlineUsers() {
-        $users = User::with('geopoint')->get();
-        $online_users = [];
-        foreach($users as $key => $user) {
-            if($user->isOnline()) {
-              array_push($online_users, $user);
-            }
-        }
-     
-        return response()->json($online_users);
+        $user = User::all();
+        $geopoint = Geopoint::all();
+        return response()->json(
+            $geopoint
+        );
 
     }
     public function index()
@@ -33,6 +29,7 @@ class UserController extends Controller
         $user_id = Auth::id();
         $user = User::findOrFail($user_id);
         $user->roles->first();
+        $user->geopoints->first();
         $user['authenticated'] = Auth::check();
         return response()->json(
            $user

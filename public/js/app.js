@@ -2027,7 +2027,6 @@ __webpack_require__.r(__webpack_exports__);
       var url = 'http://localhost:8000/user';
       var authUser = {};
       axios.get(url).then(function (response) {
-        console.log(response);
         _this.firstName = response.data.fname;
         _this.lname = response.data.lname;
         _this.phone = response.data.phone;
@@ -2036,7 +2035,6 @@ __webpack_require__.r(__webpack_exports__);
         authUser.role = response.data.roles[0].name;
         authUser.authenticated = response.data.authenticated;
         window.localStorage.setItem('nsUser', JSON.stringify(authUser));
-        console.log(authUser);
       });
     }
   }
@@ -2111,7 +2109,6 @@ __webpack_require__.r(__webpack_exports__);
       var headers = {
         'X-CSRF-TOKEN': this._token
       };
-      console.log(this._token);
       axios.post(this.web_url + 'user_geopoint/' + this.user_id, data, {
         headers: headers
       }).then(function (response) {
