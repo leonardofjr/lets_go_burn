@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/user_panel', 'HomeController@index')->name('User Panel')->middleware('cors');
+Route::get('/user_cpanel', 'HomeController@index')->name('User Panel')->middleware('cors');
 Route::get('/user', 'UserController@index');
 Route::get('/producers', 'UserController@getProducers');
 Route::get('/user_geopoint/{id}', 'UserGeopointController@show');

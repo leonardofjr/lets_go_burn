@@ -23,7 +23,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import App from './components/App'
-import UserPanel from './components/UserPanel'
+import Profile from './components/Profile'
 import Admin from './components/Admin'
 import Studio from './components/Studio'
 
@@ -34,7 +34,7 @@ import Studio from './components/Studio'
  */
 
 const routes = [
-    { path: '/', component: UserPanel },
+    { path: '/', component: Profile },
     { path: '/users', component: Admin, meta: { requiresAuth: true, adminAuth: true} },
     { path: '/studio', component: Studio, meta: { requiresAuth: true, producerAuth: true} },
   ]

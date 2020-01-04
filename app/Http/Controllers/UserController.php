@@ -20,12 +20,13 @@ class UserController extends Controller
         $producers = User::all();
         $data = [];
         foreach ($producers as $key => $producer ) {
-            if ($producer->roles->first()->name == 'producer') {
+
+            if ($producer->roles->first()['name'] == 'producer') {
+
              array_push($data, [
                 'user' => $producer,
-                'geopoints' => $producer->geopoints->where('id', $producer->id)->first(),
                 'role' => $producer->roles->first(),
-                'studio' => $producer->studio->first(),
+                'studio' => $producer->studio,
              ]);
             }
         }
@@ -39,8 +40,7 @@ class UserController extends Controller
         $user_id = Auth::id();
         $user = User::findOrFail($user_id);
         $user->roles->first();
-        $user->geopoints->first();
-        $user->studio->first();
+        $user->studio;
         $user['authenticated'] = Auth::check();
         return response()->json(
            $user

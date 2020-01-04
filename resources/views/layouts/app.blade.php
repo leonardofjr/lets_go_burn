@@ -85,52 +85,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
-    <script>
-
-let lat, lng;
-    function init() {
-        navigator.geolocation.getCurrentPosition(storePosition);
-    }
-    function checkGeolocationAPIStatus() {
-        navigator.permissions.query({
-        name: 'geolocation'
-        }).then(function(status) {
-            if (status.state === 'granted') {
-                $('#register-btn').removeAttr('disabled');
-            }
-            else {
-                alert('Location must be allowed in order to register.')
-            }
-        })
-    }
-
-    function storePosition(position) {
-         this.lat = position.coords.latitude
-         this.lng = position.coords.longitude
-         checkGeolocationAPIStatus();
-         setPositionOnRegistration();
-    }
-
-    function setPositionOnRegistration() {
-        ele1 = $('input[name="_lat"')
-        ele2 = $('input[name="_lng"')
-        if (ele1 && ele2) {
-            ele1.val(this.lat);
-            ele2.val(this.lng);
-        }
-    }
-
-    init();
-</script>
 
 <script type="text/javascript">
 
-    /*** Root Address ***/
+    /*** Constants ***/
     const rootUrl = 'http://localhost:8000/';
     
     /*** Fetching Data from backend ***/
+
     let user = fetch(rootUrl + 'user')
     .then(response => {
+
         return response.json();
     })
 
@@ -139,19 +104,48 @@ let lat, lng;
         return response.json();
     })
 
-    /*** Initilization ***/
-
+    /*** Initialization Function ***/
+    let lat, lon;
+    this.lat = 43.653225;
+    this.lon = -79.383186;
     function init() {
-       // createMap();
-      //  createProducerMarkers();
+        getCurrentUserPosition();
+        createMap();
+        createProducerMarkers();
         createPaneElements();
     }
 
+
+
+    /*** Getting current user position ***/
+    
+
+
+    function getCurrentUserPosition() {
+        navigator.geolocation.getCurrentPosition(storePosition);
+    }
+
+    function storePosition(position) {
+        console.log(position);
+
+        if (position) {                   
+            this.lat = position.coords.latitude
+             this.lon = position.coords.longitude
+        
+        } 
+    }
+
+
     /*** Map Creation ***/
 
-    function createMap(data) {
+    function createMap(userPosition) {
         user.then(data => {
-            this.mymap = L.map('homeMap').setView([data.geopoints[0].lat, data.geopoints[0].lon], 13);
+
+            if(!data.studio) {
+                this.mymap = L.map('homeMap').setView([this.lat, this.lon], 13);
+            } else {
+                this.mymap = L.map('homeMap').setView([data.studio.lat, data.studio.lon], 13);
+            }
           // this.mymap.locate({setView: true, maxZoom: 16});
 
             const attribution = '&copy; <a href="https:///openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -181,7 +175,7 @@ let lat, lng;
 
   
             data.forEach((item) => {
-                L.marker([ item.geopoints.lat,  item.geopoints.lon], {icon: marker}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + item.studio.name + '</span>'  + '<br>' + item.studio.address + '<br>' + item.studio.phone);
+                L.marker([ item.studio.lat,  item.studio.lon], {icon: marker}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + item.studio.name + '</span>'  + '<br>' + item.studio.address + '<br>' + item.studio.phone);
             })
         });
     }
@@ -191,6 +185,7 @@ let lat, lng;
 
     function createPaneElements() {
         users.then(data => {
+            console.log(data);
             let pane = $('.section_result_content');
             data.forEach((item) => {
                 sectionResultContent = '<div class"section_result_details_container>'
@@ -204,7 +199,11 @@ let lat, lng;
             
         });
     }
+
+    /*** Initializing Function ***/
+
     init();
+
     
 
 </script>

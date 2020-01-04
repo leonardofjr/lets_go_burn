@@ -22,6 +22,8 @@ class CreateStudiosTable extends Migration
             $table->string('address');
             $table->string('city');
             $table->string('postal_code');
+            $table->decimal('lat', 10, 7)->nullable();;
+            $table->decimal('lon', 10, 7)->nullable();;
             $table->timestamps();
         });
     }

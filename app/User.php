@@ -40,10 +40,6 @@ class User extends Authenticatable
     /**
      * Get the users' geopoint.
      */
-        public function geopoints()
-        {
-            return $this->belongsToMany('App\Geopoint', 'geopoint_user');
-        }
 
         public function studio() {
             return $this->hasOne('App\Studio', 'user_id');
@@ -55,5 +51,15 @@ class User extends Authenticatable
 
         public function roles() {
             return $this->belongsToMany('App\Role', 'role_user');
+        }
+
+
+        public function testDatabase()
+        {
+
+            // Create three App\User instances...
+            $users = factory(User::class, 3)->create();
+        
+            // Use model in tests...
         }
 }

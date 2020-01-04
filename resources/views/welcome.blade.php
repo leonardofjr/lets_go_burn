@@ -26,7 +26,7 @@
                                             </a>
             
                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                                <a href="{{ url('/user_panel') }}" class="dropdown-item">Settings</a>
+                                                <a href="{{ url('/user_cpanel') }}" class="dropdown-item">Settings</a>
             
                                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                                    onclick="event.preventDefault();
@@ -47,7 +47,7 @@
 
                 <main>
                     <div class="row">
-                        <div class="col-md-2" id="pane">
+                        <div class="col-md-2 border-right" id="pane">
                             <div class="section_result_content">
 
                             </div>

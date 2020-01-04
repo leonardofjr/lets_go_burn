@@ -5,6 +5,8 @@ use App\User;
 use App\Role;
 use App\Studio;
 use App\Geopoint;
+use Faker\Factory as Faker;
+
 
 class UsersTableSeeder extends Seeder
 {
@@ -22,8 +24,7 @@ class UsersTableSeeder extends Seeder
         $userRole = Role::where('name', 'user')->first();
 
         /* Getting geopoints table data */
-        $geopoint = Geopoint::get();
-
+  
         /* Getting studios table data */
 
        /* Creating user table data */ 
@@ -51,9 +52,10 @@ class UsersTableSeeder extends Seeder
         $producer->roles()->attach($producerRole);
         $user->roles()->attach($userRole);
         
-        $admin->geopoints()->attach($geopoint[0]);
-        $producer->geopoints()->attach($geopoint[1]);
-        $user->geopoints()->attach($geopoint[2]);
+
+
+        $user->testDatabase();
+
 
     }
 }
