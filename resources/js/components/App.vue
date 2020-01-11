@@ -41,6 +41,13 @@
                 studioName: '',
                 streetAddress: '',
                 role: '',
+                studioServices: [
+                    'recording'
+                ],
+                studioServicePrice: [
+                    
+                ],
+
 
             }
         },

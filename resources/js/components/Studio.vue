@@ -13,23 +13,72 @@
             <div class="form-group row">
                 <label for="phone" class="col-md-3 col-form-label">Phone</label>
                 <div class="col-md-9">
-                    <input id="phone" type="tel" class="form-control" v-model="this.$parent.phone" required autocomplete="phone" autofocus>
+                    <input name="phone" id="phone" type="tel" class="form-control" v-model="this.$parent.phone" required autocomplete="phone" autofocus>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="streetAddress" class="col-md-3 col-form-label">Street Address</label>
-                <div class="col-md-9">
+                <div class=" col-md-7">
                     <input id="streetAddress" type="text" class="form-control" v-model="this.$parent.streetAddress" name="streetAddress" required autocomplete="streetAddress" autofocus>
-                    <button v-on:click="search">Search</button>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary" v-on:click="search">Search</button>
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label for="city" class="col-md-3 col-form-label">City</label>
+                <div class=" col-md-9">
+                    <input disabled id="city" type="text" class="form-control" v-model="this.$parent.city" name="city" required autocomplete="city" autofocus>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="postal_code" class="col-md-3 col-form-label">Postal Code</label>
+                <div class=" col-md-9">
+                    <input disabled id="postal_code" type="text" class="form-control" v-model="this.$parent.postal_code" name="postal_code" required autocomplete="postal_code" autofocus>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="territory" class="col-md-3 col-form-label">Territory</label>
+                <div class=" col-md-9">
+                    <input disabled id="territory" type="text" class="form-control" v-model="this.$parent.territory" name="territory" required autocomplete="territory" autofocus>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label  for="country" class="col-md-3 col-form-label">Country</label>
+                <div class=" col-md-9">
+                    <input disabled id="country" type="text" class="form-control" v-model="this.$parent.country" name="country" required autocomplete="country" autofocus>
+                </div>
+            </div>
+
             <div id="mapContainer">
 
             </div>
+
             <hr>
-            <h3>Studio Rates</h3>
+            <h3>Studio Description</h3>
             <hr>
+            <textarea name="studioDescription"></textarea>
+            <hr>
+            <h3>Studio Services</h3>
+            <hr>
+                <div class="form-group row">
+                    
+                    <select v-model="selectedService" class="col-md-4 form-control ml-3" name="studioServices[]" autocomplete="studioServices" autofocus>
+                    <template v-for='(studioServiceDropdownItem, i) in this.studioServiceDropdown' >
+                                <option :key='i' :value="studioServiceDropdownItem.value">{{studioServiceDropdownItem.name}}</option>
+                        </template>
+
+                    </select>
+                    <div class="col-md-2">
+                        <input  type="text" class="form-control" v-model="this.$parent.studioServicePrice" name="studioServicePrice[]" autocomplete="studioServicePrice" autofocus placeholder="$50/HR">
+                    </div>
+                </div>
+            <button class="btn btn-primary float-right" type="submit" v-on:click='submit()'>Save</button>
 
         </div>
 </template>
@@ -38,6 +87,16 @@
     export default {
         data() {
             return {
+                selectedService: "",
+                studioDescription : '',
+                    studioServiceDropdown: [
+                    { name : '--Select Service--', value : '' },
+                    { name : 'Recording', value : 'recording' },
+                    { name : 'Mixing', value : 'mixing' },
+                    { name : 'Recording & Mixing', value : 'recording_mixing' },
+                    { name : 'Mixing & Mastering', value : 'mixing_mastering' },
+                    { name : 'Video & Editing', value : 'video_editing' }
+                ],
                 lat: '',
                 lon: '',
                 promise: undefined,
@@ -46,9 +105,39 @@
             }
         },
         mounted() {
-
+                    CKEDITOR.replace('studioDescription');
         },
-    methods: {
+        methods: {
+            submit() {
+   
+
+               
+                    this.setData();
+                axios({
+                        method: 'post',
+                        url : '/user_cpanel/studio',
+                        headers: {
+                            'X-CSRF' : this._token
+                        },
+                        data: {
+                            name : $('input[name="studioName"]').val(), 
+                            phone : $('input[name="phone"]').val(), 
+                            phone : $('input[name="phone"]').val(), 
+                            street_address : $('input[name="streetAddress"]').val(), 
+                            city : $('input[name="city"]').val(), 
+                            postal_code : $('input[name="postal_code"]').val(), 
+                            territory : $('input[name="territory"]').val(), 
+                            country : $('input[name="countryy"]').val(), 
+                            description : CKEDITOR.instances.studioDescription.getData(), 
+
+                        }
+                    }).then((response) => {
+                        console.log(response);
+                    })
+            },
+            setData() {
+            },
+            
             search() {
                     let query = this.streetAddress;
                     let params = 'format=json&addressdetails=1&limit=1&polygon_svg=1';

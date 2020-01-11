@@ -17,7 +17,7 @@ class StudiosTableSeeder extends Seeder
         $miguel = User::where('email', 'miguel@webmaster.com')->first();
 
         $data = [
-            'name' => 'Raw Beats',
+            'name' => 'Young Savage Studio',
             'phone' => '(416) 907-4697',
             'address' => '188 Bur Oak Avenue',
             'city' => 'Markham',

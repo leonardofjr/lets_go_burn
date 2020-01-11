@@ -11114,3 +11114,7 @@ body {
   height: 100vh;
 }
 
+.ck .ck-content {
+  height: 200px;
+}
+

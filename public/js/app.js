@@ -2014,7 +2014,9 @@ __webpack_require__.r(__webpack_exports__);
       phone: '',
       studioName: '',
       streetAddress: '',
-      role: ''
+      role: '',
+      studioServices: ['recording'],
+      studioServicePrice: []
     };
   },
   mounted: function mounted() {
@@ -2105,6 +2107,57 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2144,14 +2197,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      selectedService: "",
+      studioDescription: '',
+      studioServiceDropdown: [{
+        name: '--Select Service--',
+        value: ''
+      }, {
+        name: 'Recording',
+        value: 'recording'
+      }, {
+        name: 'Mixing',
+        value: 'mixing'
+      }, {
+        name: 'Recording & Mixing',
+        value: 'recording_mixing'
+      }, {
+        name: 'Mixing & Mastering',
+        value: 'mixing_mastering'
+      }, {
+        name: 'Video & Editing',
+        value: 'video_editing'
+      }],
       lat: '',
       lon: '',
       promise: undefined,
       _token: this._token = $('meta[name="csrf-token"').attr('content')
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    CKEDITOR.replace('studioDescription');
+  },
   methods: {
+    submit: function submit() {
+      var _data;
+
+      this.setData();
+      axios({
+        method: 'post',
+        url: '/user_cpanel/studio',
+        headers: {
+          'X-CSRF': this._token
+        },
+        data: (_data = {
+          name: $('input[name="studioName"]').val(),
+          phone: $('input[name="phone"]').val()
+        }, _defineProperty(_data, "phone", $('input[name="phone"]').val()), _defineProperty(_data, "street_address", $('input[name="streetAddress"]').val()), _defineProperty(_data, "city", $('input[name="city"]').val()), _defineProperty(_data, "postal_code", $('input[name="postal_code"]').val()), _defineProperty(_data, "territory", $('input[name="territory"]').val()), _defineProperty(_data, "country", $('input[name="countryy"]').val()), _defineProperty(_data, "description", CKEDITOR.instances.studioDescription.getData()), _data)
+      }).then(function (response) {
+        console.log(response);
+      });
+    },
+    setData: function setData() {},
     search: function search() {
       var query = this.streetAddress;
       var params = 'format=json&addressdetails=1&limit=1&polygon_svg=1';
@@ -38418,6 +38513,7 @@ var render = function() {
           ],
           staticClass: "form-control",
           attrs: {
+            name: "phone",
             id: "phone",
             type: "tel",
             required: "",
@@ -38447,7 +38543,7 @@ var render = function() {
         [_vm._v("Street Address")]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-9" }, [
+      _c("div", { staticClass: " col-md-7" }, [
         _c("input", {
           directives: [
             {
@@ -38475,9 +38571,178 @@ var render = function() {
               _vm.$set(this.$parent, "streetAddress", $event.target.value)
             }
           }
-        }),
-        _vm._v(" "),
-        _c("button", { on: { click: _vm.search } }, [_vm._v("Search")])
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-2" }, [
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", on: { click: _vm.search } },
+          [_vm._v("Search")]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-3 col-form-label", attrs: { for: "city" } },
+        [_vm._v("City")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: " col-md-9" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.city,
+              expression: "this.$parent.city"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            disabled: "",
+            id: "city",
+            type: "text",
+            name: "city",
+            required: "",
+            autocomplete: "city",
+            autofocus: ""
+          },
+          domProps: { value: this.$parent.city },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "city", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-md-3 col-form-label",
+          attrs: { for: "postal_code" }
+        },
+        [_vm._v("Postal Code")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: " col-md-9" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.postal_code,
+              expression: "this.$parent.postal_code"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            disabled: "",
+            id: "postal_code",
+            type: "text",
+            name: "postal_code",
+            required: "",
+            autocomplete: "postal_code",
+            autofocus: ""
+          },
+          domProps: { value: this.$parent.postal_code },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "postal_code", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-3 col-form-label", attrs: { for: "territory" } },
+        [_vm._v("Territory")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: " col-md-9" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.territory,
+              expression: "this.$parent.territory"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            disabled: "",
+            id: "territory",
+            type: "text",
+            name: "territory",
+            required: "",
+            autocomplete: "territory",
+            autofocus: ""
+          },
+          domProps: { value: this.$parent.territory },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "territory", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-3 col-form-label", attrs: { for: "country" } },
+        [_vm._v("Country")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: " col-md-9" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.country,
+              expression: "this.$parent.country"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            disabled: "",
+            id: "country",
+            type: "text",
+            name: "country",
+            required: "",
+            autocomplete: "country",
+            autofocus: ""
+          },
+          domProps: { value: this.$parent.country },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "country", $event.target.value)
+            }
+          }
+        })
       ])
     ]),
     _vm._v(" "),
@@ -38485,9 +38750,116 @@ var render = function() {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _c("h3", [_vm._v("Studio Rates")]),
+    _c("h3", [_vm._v("Studio Description")]),
     _vm._v(" "),
-    _c("hr")
+    _c("hr"),
+    _vm._v(" "),
+    _c("textarea", { attrs: { name: "studioDescription" } }),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("h3", [_vm._v("Studio Services")]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selectedService,
+              expression: "selectedService"
+            }
+          ],
+          staticClass: "col-md-4 form-control ml-3",
+          attrs: {
+            name: "studioServices[]",
+            autocomplete: "studioServices",
+            autofocus: ""
+          },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selectedService = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _vm._l(this.studioServiceDropdown, function(
+            studioServiceDropdownItem,
+            i
+          ) {
+            return [
+              _c(
+                "option",
+                {
+                  key: i,
+                  domProps: { value: studioServiceDropdownItem.value }
+                },
+                [_vm._v(_vm._s(studioServiceDropdownItem.name))]
+              )
+            ]
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-2" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.studioServicePrice,
+              expression: "this.$parent.studioServicePrice"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "studioServicePrice[]",
+            autocomplete: "studioServicePrice",
+            autofocus: "",
+            placeholder: "$50/HR"
+          },
+          domProps: { value: this.$parent.studioServicePrice },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "studioServicePrice", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary float-right",
+        attrs: { type: "submit" },
+        on: {
+          click: function($event) {
+            return _vm.submit()
+          }
+        }
+      },
+      [_vm._v("Save")]
+    )
   ])
 }
 var staticRenderFns = []
