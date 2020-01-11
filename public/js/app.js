@@ -2187,13 +2187,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2248,11 +2241,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     setData: function setData() {},
     search: function search() {
-      var query = this.streetAddress;
+      var query = $('input[name="streetAddress"]').val();
+      console.log(query);
       var params = 'format=json&addressdetails=1&limit=1&polygon_svg=1';
       var osmUrl = 'https://nominatim.openstreetmap.org/search/' + query + '?' + params;
       this.promise = axios.get(osmUrl).then(function (response) {
-        console.log('Success');
+        console.log(response);
+        $('input[name="city"]').val(response.data[0].address.city);
+        $('input[name="territory"]').val(response.data[0].address.state);
+        $('input[name="country"]').val(response.data[0].address.country);
         return response.data[0];
       });
       this.destroyMapElement();
@@ -2304,7 +2301,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           iconUrl: 'leaf-orange.png'
         });
         L.marker([data.lat, data.lon], {
-          icon: greenIcon
+          icon: greenIcon,
+          draggable: true,
+          autoPan: true
         }).addTo(_this2.mymap).bindPopup('<span class="font-weight-bold">' + _this2.name + '</span>' + '<br>Come Chill');
       });
     },
@@ -38617,49 +38616,6 @@ var render = function() {
                 return
               }
               _vm.$set(this.$parent, "city", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-md-3 col-form-label",
-          attrs: { for: "postal_code" }
-        },
-        [_vm._v("Postal Code")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: " col-md-9" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: this.$parent.postal_code,
-              expression: "this.$parent.postal_code"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            disabled: "",
-            id: "postal_code",
-            type: "text",
-            name: "postal_code",
-            required: "",
-            autocomplete: "postal_code",
-            autofocus: ""
-          },
-          domProps: { value: this.$parent.postal_code },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(this.$parent, "postal_code", $event.target.value)
             }
           }
         })

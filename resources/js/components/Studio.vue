@@ -35,13 +35,6 @@
             </div>
 
             <div class="form-group row">
-                <label for="postal_code" class="col-md-3 col-form-label">Postal Code</label>
-                <div class=" col-md-9">
-                    <input disabled id="postal_code" type="text" class="form-control" v-model="this.$parent.postal_code" name="postal_code" required autocomplete="postal_code" autofocus>
-                </div>
-            </div>
-
-            <div class="form-group row">
                 <label for="territory" class="col-md-3 col-form-label">Territory</label>
                 <div class=" col-md-9">
                     <input disabled id="territory" type="text" class="form-control" v-model="this.$parent.territory" name="territory" required autocomplete="territory" autofocus>
@@ -139,14 +132,18 @@
             },
             
             search() {
-                    let query = this.streetAddress;
+                    let query =  $('input[name="streetAddress"]').val();
+                    console.log(query);
                     let params = 'format=json&addressdetails=1&limit=1&polygon_svg=1';
                     const osmUrl = 'https://nominatim.openstreetmap.org/search/' + query + '?' + params;
 
                     this.promise = axios
                     .get(osmUrl)
                     .then(response => {
-                        console.log('Success');
+                        console.log(response);
+                        $('input[name="city"]').val(response.data[0].address.city);
+                        $('input[name="territory"]').val(response.data[0].address.state);
+                        $('input[name="country"]').val(response.data[0].address.country);
                         return  response.data[0];
                     });
                     this.destroyMapElement();
@@ -178,15 +175,17 @@
                             shadowSize:   [50, 64], // size of the shadow
                             iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
                             shadowAnchor: [4, 62],  // the same for the shadow
-                            popupAnchor:  [-0, -25] // point from which the popup should open relative to the iconAnchor
+                            popupAnchor:  [-0, -25], // point from which the popup should open relative to the iconAnchor
                         }
                     });
                     let greenIcon = new LeafIcon({iconUrl: 'leaf-green.png'}),
                     redIcon = new LeafIcon({iconUrl: 'leaf-red.png'}),
                     orangeIcon = new LeafIcon({iconUrl: 'leaf-orange.png'});
 
-                    L.marker([data.lat, data.lon], {icon: greenIcon}).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
-
+                    L.marker(
+                        [ data.lat, data.lon ], 
+                        { icon: greenIcon, draggable: true, autoPan: true }
+                        ).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
                 })
             },
 
