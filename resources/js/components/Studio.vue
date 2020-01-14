@@ -178,6 +178,7 @@
                     tiles.addTo(this.mymap)
                     this.createUserMarker();
                 });
+
             },
             createUserMarker() {
                     this.promise.then(data => {
@@ -198,10 +199,16 @@
 
                     L.marker(
                         [ data.lat, data.lon ], 
-                        { icon: greenIcon, draggable: true, autoPan: true }
-                        ).addTo(this.mymap).bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
+                        { icon: greenIcon, draggable: true, autoPan: true })
+                        .addTo(this.mymap)
+                        .bindPopup('<span class="font-weight-bold">' + this.name + '</span>' + '<br>Come Chill');
                 })
+
+                                        
+
             },
+
+    
 
             createMapElement() {
                 $('#mapContainer').append('<div id="mapid"></div>');
