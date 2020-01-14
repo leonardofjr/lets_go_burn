@@ -1,5 +1,36 @@
 <template>
         <div>
+            <div id="searchModal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="form-group row">
+                                <label for="streetAddress" class="col-md-3 col-form-label">Street Address</label>
+                                <div class=" col-md-7">
+                                    <input id="streetAddress" type="text" class="form-control" v-model="this.$parent.streetAddress" name="streetAddress" required autocomplete="streetAddress" autofocus>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-primary" v-on:click="search">Search</button>
+                                </div>
+                            </div>
+                            <div id="mapContainer">
+
+                             </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
             <hr>
             <h3>Studio Information</h3>
             <hr>
@@ -18,38 +49,17 @@
             </div>
 
             <div class="form-group row">
-                <label for="streetAddress" class="col-md-3 col-form-label">Street Address</label>
-                <div class=" col-md-7">
-                    <input id="streetAddress" type="text" class="form-control" v-model="this.$parent.streetAddress" name="streetAddress" required autocomplete="streetAddress" autofocus>
+                <label for="latitude" class="col-md-2 col-form-label">Latitude</label>
+                <div class=" col-md-2">
+                    <input id="latitude" type="text" class="form-control" v-model="this.$parent.latitude" name="latitude" required autocomplete="latitude" autofocus>
                 </div>
-                <div class="col-md-2">
-                    <button class="btn btn-primary" v-on:click="search">Search</button>
+                <label for="longitude" class="col-md-2 col-form-label">Longitude</label>
+                <div class=" col-md-2">
+                    <input id="longitude" type="text" class="form-control" v-model="this.$parent.longitude" name="longitude" required autocomplete="longitude" autofocus>
                 </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="city" class="col-md-3 col-form-label">City</label>
-                <div class=" col-md-9">
-                    <input disabled id="city" type="text" class="form-control" v-model="this.$parent.city" name="city" required autocomplete="city" autofocus>
+                <div class="col-md-4">
+                    <button class="btn btn-primary" v-on:click="openSearchModal">Set Studio Location</button>
                 </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="territory" class="col-md-3 col-form-label">Territory</label>
-                <div class=" col-md-9">
-                    <input disabled id="territory" type="text" class="form-control" v-model="this.$parent.territory" name="territory" required autocomplete="territory" autofocus>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label  for="country" class="col-md-3 col-form-label">Country</label>
-                <div class=" col-md-9">
-                    <input disabled id="country" type="text" class="form-control" v-model="this.$parent.country" name="country" required autocomplete="country" autofocus>
-                </div>
-            </div>
-
-            <div id="mapContainer">
-
             </div>
 
             <hr>
@@ -130,6 +140,10 @@
             },
             setData() {
             },
+            openSearchModal() {
+                $('#searchModal').modal('show');
+            }
+            ,
             
             search() {
                     let query =  $('input[name="streetAddress"]').val();

@@ -2187,6 +2187,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2240,6 +2250,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     setData: function setData() {},
+    openSearchModal: function openSearchModal() {
+      $('#searchModal').modal('show');
+    },
     search: function search() {
       var query = $('input[name="streetAddress"]').val();
       console.log(query);
@@ -38445,6 +38458,88 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "modal",
+        attrs: { id: "searchModal", tabindex: "-1", role: "dialog" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-md-3 col-form-label",
+                      attrs: { for: "streetAddress" }
+                    },
+                    [_vm._v("Street Address")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: " col-md-7" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: this.$parent.streetAddress,
+                          expression: "this.$parent.streetAddress"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "streetAddress",
+                        type: "text",
+                        name: "streetAddress",
+                        required: "",
+                        autocomplete: "streetAddress",
+                        autofocus: ""
+                      },
+                      domProps: { value: this.$parent.streetAddress },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            this.$parent,
+                            "streetAddress",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-2" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.search }
+                      },
+                      [_vm._v("Search")]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { attrs: { id: "mapContainer" } })
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
     _c("h3", [_vm._v("Studio Information")]),
@@ -38535,174 +38630,89 @@ var render = function() {
     _c("div", { staticClass: "form-group row" }, [
       _c(
         "label",
-        {
-          staticClass: "col-md-3 col-form-label",
-          attrs: { for: "streetAddress" }
-        },
-        [_vm._v("Street Address")]
+        { staticClass: "col-md-2 col-form-label", attrs: { for: "latitude" } },
+        [_vm._v("Latitude")]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: " col-md-7" }, [
+      _c("div", { staticClass: " col-md-2" }, [
         _c("input", {
           directives: [
             {
               name: "model",
               rawName: "v-model",
-              value: this.$parent.streetAddress,
-              expression: "this.$parent.streetAddress"
+              value: this.$parent.latitude,
+              expression: "this.$parent.latitude"
             }
           ],
           staticClass: "form-control",
           attrs: {
-            id: "streetAddress",
+            id: "latitude",
             type: "text",
-            name: "streetAddress",
+            name: "latitude",
             required: "",
-            autocomplete: "streetAddress",
+            autocomplete: "latitude",
             autofocus: ""
           },
-          domProps: { value: this.$parent.streetAddress },
+          domProps: { value: this.$parent.latitude },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(this.$parent, "streetAddress", $event.target.value)
+              _vm.$set(this.$parent, "latitude", $event.target.value)
             }
           }
         })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-2" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-2 col-form-label", attrs: { for: "longitude" } },
+        [_vm._v("Longitude")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: " col-md-2" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.$parent.longitude,
+              expression: "this.$parent.longitude"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            id: "longitude",
+            type: "text",
+            name: "longitude",
+            required: "",
+            autocomplete: "longitude",
+            autofocus: ""
+          },
+          domProps: { value: this.$parent.longitude },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.$parent, "longitude", $event.target.value)
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
         _c(
           "button",
-          { staticClass: "btn btn-primary", on: { click: _vm.search } },
-          [_vm._v("Search")]
+          {
+            staticClass: "btn btn-primary",
+            on: { click: _vm.openSearchModal }
+          },
+          [_vm._v("Set Studio Location")]
         )
       ])
     ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-3 col-form-label", attrs: { for: "city" } },
-        [_vm._v("City")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: " col-md-9" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: this.$parent.city,
-              expression: "this.$parent.city"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            disabled: "",
-            id: "city",
-            type: "text",
-            name: "city",
-            required: "",
-            autocomplete: "city",
-            autofocus: ""
-          },
-          domProps: { value: this.$parent.city },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(this.$parent, "city", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-3 col-form-label", attrs: { for: "territory" } },
-        [_vm._v("Territory")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: " col-md-9" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: this.$parent.territory,
-              expression: "this.$parent.territory"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            disabled: "",
-            id: "territory",
-            type: "text",
-            name: "territory",
-            required: "",
-            autocomplete: "territory",
-            autofocus: ""
-          },
-          domProps: { value: this.$parent.territory },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(this.$parent, "territory", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-3 col-form-label", attrs: { for: "country" } },
-        [_vm._v("Country")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: " col-md-9" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: this.$parent.country,
-              expression: "this.$parent.country"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            disabled: "",
-            id: "country",
-            type: "text",
-            name: "country",
-            required: "",
-            autocomplete: "country",
-            autofocus: ""
-          },
-          domProps: { value: this.$parent.country },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(this.$parent, "country", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { attrs: { id: "mapContainer" } }),
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
@@ -38818,7 +38828,50 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Save changes")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -54310,8 +54363,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\wamp64\www\html\toke_up\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\wamp64\www\html\toke_up\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\wamp64\www\html\neighbourhood_studios\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\wamp64\www\html\neighbourhood_studios\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
